@@ -10,6 +10,8 @@ public class RaceMonitor : MonoBehaviour
     public static bool isStartedRacing = false;
     public static int totalLaps = 1;
 
+    public int playerSelectedCarIndex;
+
     public GameObject panelHUD;
     public GameObject gameOverPanel;
 
@@ -25,12 +27,29 @@ public class RaceMonitor : MonoBehaviour
     {
         spawnPoints = GameObject.FindGameObjectsWithTag("spawnpoint");
 
-        foreach(GameObject spawnPoint in spawnPoints)
-        {
-            GameObject car = Instantiate(carPrefabs[Random.Range(0, carPrefabs.Length - 1)]);
+        playerSelectedCarIndex = PlayerPrefs.GetInt("PlayerCarIndex",0);
 
-            car.transform.position = spawnPoint.transform.position;
-            car.transform.rotation = spawnPoint.transform.rotation;
+        int randomSpawnPointIndex = Random.Range(0, spawnPoints.Length - 1);
+
+        GameObject playerCar = Instantiate(carPrefabs[playerSelectedCarIndex]);
+
+        playerCar.GetComponent<AIControllerWithTracker>().enabled = false;
+        playerCar.GetComponent<PlayerController>().enabled = true;
+
+        playerCar.transform.position = spawnPoints[randomSpawnPointIndex].transform.position;
+        playerCar.transform.rotation = spawnPoints[randomSpawnPointIndex].transform.rotation;
+
+        SmoothFollow.playerCar = playerCar.transform;
+
+        foreach (GameObject spawnPoint in spawnPoints)
+        {
+            if (spawnPoint != spawnPoints[randomSpawnPointIndex])
+            {
+                GameObject car = Instantiate(carPrefabs[Random.Range(0, carPrefabs.Length - 1)]);
+
+                car.transform.position = spawnPoint.transform.position;
+                car.transform.rotation = spawnPoint.transform.rotation;
+            }
         }
 
         foreach(GameObject countDownImage in countDownImages)
@@ -78,7 +97,6 @@ public class RaceMonitor : MonoBehaviour
             }
         }
 
-        print("Finished" + finishedCount);
 
        if(finishedCount == cars.Length)
         {

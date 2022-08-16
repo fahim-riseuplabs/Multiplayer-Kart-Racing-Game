@@ -37,6 +37,8 @@ public class PlayerController : MonoBehaviour
             accelInput = 0;
         }
 
+        print(accelInput);
+
         if(checkPointManager.lap == RaceMonitor.totalLaps + 1)
         {
             drive.highAccelAudio.Stop();

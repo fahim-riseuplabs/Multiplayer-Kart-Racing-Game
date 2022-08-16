@@ -1272,7 +1272,7 @@ GameObject:
   - component: {fileID: 7098491222873181803}
   - component: {fileID: 7098491222873181780}
   m_Layer: 0
-  m_Name: JeepRedAI
+  m_Name: JeepRed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

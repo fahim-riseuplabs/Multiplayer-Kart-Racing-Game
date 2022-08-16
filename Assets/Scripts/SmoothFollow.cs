@@ -11,9 +11,11 @@ public class SmoothFollow : MonoBehaviour
     public float rotationDamping = 2.0f;
     public float rotationOffset = 5.0f;
 
+    public static Transform playerCar;
+
     private Transform[] target;
     public RawImage rearCamerView;
-    private int index = 2;
+    private int index = 0;
 
     private float wantedRotationAngle;
     private float wantedHeight;
@@ -29,9 +31,6 @@ public class SmoothFollow : MonoBehaviour
         {
             FP = PlayerPrefs.GetInt("FP", -1);
         }
-
-        
-
     }
     private void LateUpdate()
     {
@@ -43,6 +42,11 @@ public class SmoothFollow : MonoBehaviour
             for (int i = 0; i < cars.Length; i++)
             {
                 target[i] = cars[i].transform;
+
+                if(target[i] == playerCar)
+                {
+                    index = i;
+                }
             }
 
             target[index].Find("RearCamera").gameObject.GetComponent<Camera>().targetTexture = (rearCamerView.texture as RenderTexture);

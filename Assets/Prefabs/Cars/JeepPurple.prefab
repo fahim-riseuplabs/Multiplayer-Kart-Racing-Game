@@ -765,7 +765,7 @@ GameObject:
   - component: {fileID: 4538815928580061260}
   - component: {fileID: 1836093489655486257}
   m_Layer: 0
-  m_Name: JeepPurpleAI
+  m_Name: JeepPurple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

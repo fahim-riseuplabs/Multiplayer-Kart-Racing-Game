@@ -1469,7 +1469,7 @@ GameObject:
   - component: {fileID: 6977120047216547884}
   - component: {fileID: 7310973337037743671}
   m_Layer: 0
-  m_Name: JeepYellowAI
+  m_Name: JeepYellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

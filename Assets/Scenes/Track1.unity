@@ -1954,8 +1954,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6556,7 +6556,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 334152987}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -13272,7 +13272,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 751609335}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -17455,7 +17455,6 @@ GameObject:
   - component: {fileID: 1003041490}
   - component: {fileID: 1003041493}
   - component: {fileID: 1003041492}
-  - component: {fileID: 1003041491}
   m_Layer: 0
   m_Name: SpawnPoint (3)
   m_TagString: spawnpoint
@@ -17478,19 +17477,6 @@ Transform:
   m_Father: {fileID: 1379775626}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1003041491
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003041489}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1003041492
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17498,7 +17484,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1003041489}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -21872,13 +21858,14 @@ MonoBehaviour:
   - {fileID: 1614256726}
   - {fileID: 181599417}
   - {fileID: 1073055819}
+  playerSelectedCarIndex: 0
   panelHUD: {fileID: 578929142}
   gameOverPanel: {fileID: 1212533594}
   carPrefabs:
-  - {fileID: 6417533204388716739, guid: 316b9bd0391beec4d9e733696476bbfb, type: 3}
-  - {fileID: 4538815928580061258, guid: 44cd286c6795f8e4c856ed0644d0fdda, type: 3}
   - {fileID: 7098491222873181781, guid: 9c86db9eeffe4ce42a2b3c2948e847bb, type: 3}
   - {fileID: 6977120047216547885, guid: e78ccdc8630a544479aa0805c173f110, type: 3}
+  - {fileID: 4538815928580061258, guid: 44cd286c6795f8e4c856ed0644d0fdda, type: 3}
+  - {fileID: 6417533204388716739, guid: 316b9bd0391beec4d9e733696476bbfb, type: 3}
   checkPointManagers: []
   cars: []
 --- !u!4 &1235632328
@@ -27328,8 +27315,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 25
+  m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -36875,7 +36862,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887944927}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

@@ -193,7 +193,7 @@ public class Drive : MonoBehaviour
         }
         else
         {
-            nameUIController.nameText.text = "Fahim";
+            nameUIController.nameText.text =PlayerPrefs.GetString("PlayerName");
         }
 
         nameUIController.carRend = jeepMesh;

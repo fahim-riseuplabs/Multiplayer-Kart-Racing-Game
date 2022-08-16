@@ -774,7 +774,7 @@ GameObject:
   - component: {fileID: 6417533204388716738}
   - component: {fileID: 5836915978490555554}
   m_Layer: 0
-  m_Name: JeepGreenAI
+  m_Name: JeepGreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
