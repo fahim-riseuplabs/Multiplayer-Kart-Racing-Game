@@ -10,7 +10,7 @@ public class CheckPointManager : MonoBehaviour
     public float enteredTime;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         GameObject[] checkPoints = GameObject.FindGameObjectsWithTag("checkpoint");
         checkPointCount = checkPoints.Length;

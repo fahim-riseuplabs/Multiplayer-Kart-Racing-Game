@@ -63,7 +63,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 247
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 1
@@ -1440,9 +1440,10 @@ MonoBehaviour:
   lowPitch: 1
   highPitch: 6
   numberGears: 5
-  maxSpeed: 30
+  maxSpeed: 32
   playerNamePrefab: {fileID: 4654711627010679995, guid: a5940e33b87b140489f047c50e9a87c0, type: 3}
   jeepMesh: {fileID: 3423525290335551785}
+  networkName: 
 --- !u!114 &3423525290157276390
 MonoBehaviour:
   m_ObjectHideFlags: 0

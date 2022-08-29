@@ -504,6 +504,7 @@ MonoBehaviour:
   maxSpeed: 35
   playerNamePrefab: {fileID: 4654711627010679995, guid: a5940e33b87b140489f047c50e9a87c0, type: 3}
   jeepMesh: {fileID: 854530590315864013}
+  networkName: 
 --- !u!114 &854530589301639961
 MonoBehaviour:
   m_ObjectHideFlags: 0

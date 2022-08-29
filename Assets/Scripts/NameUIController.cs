@@ -18,6 +18,7 @@ public class NameUIController : MonoBehaviour
 
     private int carRego;
     private string position;
+    private bool isCarRego = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -41,6 +42,13 @@ public class NameUIController : MonoBehaviour
             return;
         }
 
+        if (!isCarRego)
+        {
+            carRego = Leaderboard.RegisterCar(nameText.text);
+            isCarRego = true;
+            return;
+        }
+     
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
         carInView = GeometryUtility.TestPlanesAABB(planes, carRend.bounds);
         

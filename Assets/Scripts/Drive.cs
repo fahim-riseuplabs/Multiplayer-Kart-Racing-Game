@@ -35,12 +35,13 @@ public class Drive : MonoBehaviour
 
     public GameObject playerNamePrefab;
     public Renderer jeepMesh;
+    public string networkName = "";
 
     private Vector3 wheelColiderPosition;
     private Quaternion WheelColiderQuaternion;
     private NameUIController nameUIController;
     private string[] nameNPC = { "Ratul", "Rafiq", "Masud", "Emraan", "Ovi", "Sunny", "Sumon" };
-
+    
     public void CalculateEngineSound()
     {
         float gearPercentage = (1 / (float)numberGears);
@@ -189,7 +190,14 @@ public class Drive : MonoBehaviour
 
         if (GetComponent<AIControllerWithTracker>().enabled)
         {
-            nameUIController.nameText.text = nameNPC[Random.Range(0, nameNPC.Length)];
+            if (networkName != "")
+            {
+                nameUIController.nameText.text = networkName;
+            }
+            else
+            {
+                nameUIController.nameText.text = nameNPC[Random.Range(0, nameNPC.Length)];
+            }
         }
         else
         {

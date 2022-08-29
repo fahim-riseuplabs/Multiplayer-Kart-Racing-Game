@@ -34,7 +34,7 @@ public class SmoothFollow : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if (target == null)
+        if (!RaceMonitor.isStartedRacing)
         {
             GameObject[] cars = GameObject.FindGameObjectsWithTag("car");
             target = new Transform[cars.Length];
@@ -51,6 +51,11 @@ public class SmoothFollow : MonoBehaviour
 
             target[index].Find("RearCamera").gameObject.GetComponent<Camera>().targetTexture = (rearCamerView.texture as RenderTexture);
 
+        }
+
+        if (target[index] == null)
+        {
+            return;
         }
 
         if (FP == 1)
