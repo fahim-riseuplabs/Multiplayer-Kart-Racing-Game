@@ -86,28 +86,47 @@ public class SmoothFollow : MonoBehaviour
 
     }
 
+    private void CamAngleChange()
+    {
+        FP = FP * -1;
+
+        PlayerPrefs.SetInt("FP", FP);
+    }
+
+    private void CamChange()
+    {
+        target[index].Find("RearCamera").gameObject.GetComponent<Camera>().targetTexture = null;
+
+        index++;
+
+        if (index > target.Length - 1)
+        {
+            index = 0;
+        }
+
+        target[index].Find("RearCamera").gameObject.GetComponent<Camera>().targetTexture = (rearCamerView.texture as RenderTexture);
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            FP = FP * -1;
-
-            PlayerPrefs.SetInt("FP", FP);
+            CamAngleChange();
         }
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            target[index].Find("RearCamera").gameObject.GetComponent<Camera>().targetTexture = null;
-            
-            index++;
-
-            if (index > target.Length - 1)
-            {
-                index = 0;
-            }
-
-            target[index].Find("RearCamera").gameObject.GetComponent<Camera>().targetTexture = (rearCamerView.texture as RenderTexture);
+            CamChange();
         }
     }
 
+    public void OnClickButtonFunction_CamAngleChange()
+    {
+        CamAngleChange();
+    }
+
+    public void OnClickButtonFunction_CamChange()
+    {
+        CamChange();
+    }
 }

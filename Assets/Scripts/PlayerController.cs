@@ -8,11 +8,16 @@ public class PlayerController : MonoBehaviour
     private Vector3 lastPosition;
     private Quaternion lastRotation;
     private CheckPointManager checkPointManager;
+    private MobileInputController mobileInputController;
     private float finishedSteer;
 
+    private float accelInput;
+    private float streetAngleInput;
+    private float brakeInput;
     // Start is called before the first frame update
     void Start()
     {
+        mobileInputController = FindObjectOfType<MobileInputController>();
         drive = GetComponent<Drive>();
         checkPointManager = drive.rb.GetComponent<CheckPointManager>();
         finishedSteer = Random.Range(-1, 1);
@@ -28,16 +33,46 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float accelInput = Input.GetAxis("Vertical");
-        float streetAngleInput = Input.GetAxis("Horizontal");
-        float brakeInput = Input.GetAxis("Jump");
+        if (Application.platform == RuntimePlatform.WindowsPlayer)
+        {
+            
+            accelInput = Input.GetAxis("Vertical");
+            streetAngleInput = Input.GetAxis("Horizontal");
+            brakeInput = Input.GetAxis("Jump");
+
+            print("dawdwqdqad" + Input.GetAxis("Horizontal"));
+
+        }
+
+        if(Application.platform == RuntimePlatform.Android)
+        {
+
+            if (brakeInput == 0)
+            {
+                accelInput = Mathf.Lerp(accelInput, mobileInputController.accel, Time.deltaTime * 2.5f);
+            }
+
+            if (mobileInputController.horizontalLeft == 0)
+            {
+                streetAngleInput = Mathf.Lerp(streetAngleInput, mobileInputController.horizontalRight, Time.deltaTime * 2.5f);
+            }
+            else if (mobileInputController.horizontalRight == 0)
+            {
+                streetAngleInput = Mathf.Lerp(streetAngleInput, mobileInputController.horizontalLeft, Time.deltaTime * 2.5f);
+            }
+            else if (mobileInputController.horizontalLeft != 0 && mobileInputController.horizontalRight != 0)
+            {
+                streetAngleInput = Mathf.Lerp(streetAngleInput, 0, Time.deltaTime * 2.5f);
+            }
+
+            brakeInput = mobileInputController.brake;
+
+        }
 
         if (!RaceMonitor.isStartedRacing)
         {
             accelInput = 0;
         }
-
-        print(accelInput);
 
         if(checkPointManager.lap == RaceMonitor.totalLaps + 1)
         {

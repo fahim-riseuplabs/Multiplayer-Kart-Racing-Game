@@ -27,16 +27,7 @@ public class HUDController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            if(HUDAlphaSettings == 1)
-            {
-                HUDAlphaSettings = 0;
-            }
-            else
-            {
-                HUDAlphaSettings = 1;
-            }
-            
-            PlayerPrefs.SetFloat("HUDAlpha", HUDAlphaSettings);
+            HUD();
         }
 
         if (RaceMonitor.isStartedRacing)
@@ -44,5 +35,25 @@ public class HUDController : MonoBehaviour
             CanvasGroup.alpha = HUDAlphaSettings;
         }
 
+    }
+
+    private void HUD()
+    {
+
+        if (HUDAlphaSettings == 1)
+        {
+            HUDAlphaSettings = 0;
+        }
+        else
+        {
+            HUDAlphaSettings = 1;
+        }
+
+        PlayerPrefs.SetFloat("HUDAlpha", HUDAlphaSettings);
+    }
+
+    public void OnClickButtonFunction_HUD()
+    {
+        HUD();
     }
 }

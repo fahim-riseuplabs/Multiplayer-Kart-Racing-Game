@@ -23,6 +23,8 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
 
     public GameObject waitingText;
 
+    public GameObject mobileControllerUI;
+
     [HideInInspector] public CheckPointManager[] checkPointManagers;
     [HideInInspector] public GameObject[] cars;
 
@@ -37,7 +39,15 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-       
+       if(Application.platform == RuntimePlatform.Android)
+        {
+            mobileControllerUI.SetActive(true);
+        }
+        else
+        {
+            mobileControllerUI.SetActive(false);
+        }
+
         isStartedRacing = false;
 
         spawnPoints = GameObject.FindGameObjectsWithTag("spawnpoint");
