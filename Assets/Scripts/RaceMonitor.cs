@@ -4,6 +4,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun.UtilityScripts;
 
 public class RaceMonitor : MonoBehaviourPunCallbacks
 {
@@ -13,9 +14,11 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     public static int totalLaps = 1;
 
     public int playerSelectedCarIndex;
+    public int spwanIndex;
 
     public GameObject panelHUD;
     public GameObject gameOverPanel;
+    //public GameObject quitButton;
 
     public GameObject[] carPrefabs;
 
@@ -34,7 +37,6 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     private Vector3 startPos;
     private Quaternion startRot;
 
-    private bool isGameOverTest = false;
 
     // Start is called before the first frame update
     void Start()
@@ -70,12 +72,14 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsConnected)
         {
-            startPos = spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].transform.position;
-            startRot = spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].transform.rotation;
+            //quitButton.SetActive(true);
+
+            startPos = spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber-1].transform.position;
+            startRot = spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber-1].transform.rotation;
 
             if (NetworkedPlayer.localPlayerInstance == null)
             {
-                playerCar = PhotonNetwork.Instantiate(carPrefabs[playerSelectedCarIndex].name, startPos, startRot, 0);
+                playerCar = PhotonNetwork.Instantiate(carPrefabs[playerSelectedCarIndex++].name, startPos, startRot, 0);
             }
 
             if (PhotonNetwork.IsMasterClient)
@@ -86,13 +90,12 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
             {
                 waitingText.SetActive(true);
             }
-
-          
         }
         else
         {
-            playerCar = Instantiate(carPrefabs[playerSelectedCarIndex]);
+            //quitButton.SetActive(true);
 
+            playerCar = Instantiate(carPrefabs[playerSelectedCarIndex]);
 
             playerCar.transform.position = startPos;
             playerCar.transform.rotation = startRot;
@@ -132,7 +135,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
             object[] intanceData = new object[1];
             intanceData[0] = (string)nameNPC[Random.Range(0, nameNPC.Length)];
 
-            GameObject AIcar = PhotonNetwork.Instantiate(carPrefabs[random].name, spawnPoints[i].transform.position, spawnPoints[i].transform.rotation,0, intanceData);
+            GameObject AIcar = PhotonNetwork.Instantiate(carPrefabs[random].name, spawnPoints[i].transform.position, spawnPoints[i].transform.rotation, 0, intanceData);
             AIcar.GetComponent<AIControllerWithTracker>().enabled = true;
             AIcar.GetComponent<Drive>().enabled = true;
             AIcar.GetComponent<Drive>().networkName = (string)intanceData[0];
@@ -183,14 +186,8 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         }
 
         isStartedRacing = true;
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            isGameOverTest = true;
-        }
+        //quitButton.SetActive(true);
     }
 
     private void LateUpdate()
@@ -210,10 +207,11 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
             }
         }
 
-        if (finishedCount == cars.Length || isGameOverTest)
+        if (finishedCount == cars.Length)
         {
             print("GameOver");
             panelHUD.SetActive(false);
+            //quitButton.SetActive(false);
             gameOverPanel.SetActive(true);
         }
     }
@@ -240,11 +238,43 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
                 PhotonNetwork.CurrentRoom.IsVisible = true;
             }
         }
+
+        if (isStartedRacing)
+        {
+            return;
+        }
+
+        //int index = 0;
+
+        //foreach(Player player in PhotonNetwork.PlayerList)
+        //{
+        //    if (player == PhotonNetwork.LocalPlayer)
+        //    {
+
+        //        playerCar.SetActive(false);
+        //        playerCar.transform.position = spawnPoints[index].transform.position;
+        //        playerCar.transform.rotation = spawnPoints[index].transform.rotation;
+        //        playerCar.SetActive(true);
+        //        break;
+        //    }
+
+        //    index++;
+        //}
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (PhotonNetwork.IsMasterClient && !isStartedRacing)
+        {
+            waitingText.SetActive(false);
+            startButton.SetActive(true);
+        }
     }
 
     public override void OnLeftRoom()
     {
         PhotonNetwork.LoadLevel("MainMenu");
+
     }
 
     public void OnClickButtonFunction_Restart()
@@ -278,4 +308,6 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
             SceneManager.LoadScene("MainMenu");
         }
     }
+
+   
 }

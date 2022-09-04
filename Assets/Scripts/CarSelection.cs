@@ -28,28 +28,48 @@ public class CarSelection : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            currentCarIndex++;
-                if (currentCarIndex > cars.Length - 1)
-            {
-                currentCarIndex = 0;
-            }
-
-            PlayerPrefs.SetInt("PlayerCarIndex", currentCarIndex);
+            LeftCarSelection();
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            currentCarIndex--;
-            if (currentCarIndex < 0)
-            {
-                currentCarIndex = cars.Length-1;
-            }
-
-            PlayerPrefs.SetInt("PlayerCarIndex", currentCarIndex);
+            RightCarSelection();
         }
 
         direction = Quaternion.LookRotation(cars[currentCarIndex].transform.position - this.transform.position);
         this.transform.rotation = Quaternion.Slerp(this.transform.rotation, direction, Time.deltaTime*2);
         mainMenuBG.color = Color.Lerp(mainMenuBG.color, mainMenuColorsBG[currentCarIndex],Time.deltaTime*2);
+    }
+
+    private void LeftCarSelection()
+    {
+        currentCarIndex++;
+        if (currentCarIndex > cars.Length - 1)
+        {
+            currentCarIndex = 0;
+        }
+
+        PlayerPrefs.SetInt("PlayerCarIndex", currentCarIndex);
+    }
+
+    private void RightCarSelection()
+    {
+        currentCarIndex--;
+        if (currentCarIndex < 0)
+        {
+            currentCarIndex = cars.Length - 1;
+        }
+
+        PlayerPrefs.SetInt("PlayerCarIndex", currentCarIndex);
+    }
+
+    public void OnClickButtonFunction_LeftCarSelection()
+    {
+        LeftCarSelection();
+    }
+
+    public void OnClickButtonFunction_RightCarSelection()
+    {
+        RightCarSelection();
     }
 }

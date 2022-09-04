@@ -33,14 +33,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        accelInput = Input.GetAxis("Vertical");
+        streetAngleInput = Input.GetAxis("Horizontal");
+        brakeInput = Input.GetAxis("Jump");
+
+
         if (Application.platform == RuntimePlatform.WindowsPlayer)
         {
-            
+    
             accelInput = Input.GetAxis("Vertical");
             streetAngleInput = Input.GetAxis("Horizontal");
             brakeInput = Input.GetAxis("Jump");
-
-            print("dawdwqdqad" + Input.GetAxis("Horizontal"));
 
         }
 

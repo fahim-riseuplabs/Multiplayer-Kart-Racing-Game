@@ -52,7 +52,14 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     public void ConnectSingle()
     {
-        SceneManager.LoadScene("Track1");
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.Disconnect();
+        }
+        else
+        {
+            SceneManager.LoadScene("Track1");
+        }
     }
 
     ////////////////////////////// Pun Callbacks
@@ -74,6 +81,8 @@ public class LaunchManager : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
+        SceneManager.LoadScene("Track1");
+
         feedBackText.text += "\nDisconnected because " + cause;
         isConnecting = false;
     }
@@ -82,5 +91,10 @@ public class LaunchManager : MonoBehaviourPunCallbacks
     {
         feedBackText.text += "\nJoined Room With " + PhotonNetwork.CurrentRoom.PlayerCount + " players";
         PhotonNetwork.LoadLevel("Track1");
+    }
+
+    public void OnClickButtonFunction_Quit()
+    {
+        Application.Quit();
     }
 }
