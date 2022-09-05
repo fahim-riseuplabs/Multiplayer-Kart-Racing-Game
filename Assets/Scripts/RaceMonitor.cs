@@ -11,7 +11,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     public GameObject[] countDownImages;
 
     public static bool isStartedRacing = false;
-    public static int totalLaps = 1;
+    public static int totalLaps = 3;
 
     public int playerSelectedCarIndex;
     public int spwanIndex;

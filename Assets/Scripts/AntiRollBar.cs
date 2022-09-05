@@ -49,7 +49,7 @@ public class AntiRollBar : MonoBehaviour
 
         if (groundedR)
         {
-            RB.AddForceAtPosition(WR.transform.up * -antiRollForce, WR.transform.position);
+            RB.AddForceAtPosition(WR.transform.up * antiRollForce, WR.transform.position);
         }
     }
 
