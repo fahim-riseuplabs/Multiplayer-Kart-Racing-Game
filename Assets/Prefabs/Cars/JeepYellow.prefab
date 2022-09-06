@@ -1531,7 +1531,7 @@ MonoBehaviour:
   lowPitch: 1
   highPitch: 6
   numberGears: 5
-  maxSpeed: 350
+  maxSpeed: 340
   playerNamePrefab: {fileID: 4654711627010679995, guid: a5940e33b87b140489f047c50e9a87c0, type: 3}
   jeepMesh: {fileID: 6977120046396014506}
   networkName: 
