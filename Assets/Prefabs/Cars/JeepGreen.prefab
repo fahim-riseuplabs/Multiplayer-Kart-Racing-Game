@@ -395,7 +395,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 1, z: 3.4}
+  m_Size: {x: 2, y: 1, z: 3.4}
   m_Center: {x: 0, y: 0.68, z: 0.3}
 --- !u!82 &6417533204200466416
 AudioSource:
@@ -713,7 +713,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6417533204361403897}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -833,7 +833,7 @@ MonoBehaviour:
   lowPitch: 1
   highPitch: 6
   numberGears: 5
-  maxSpeed: 320
+  maxSpeed: 240
   playerNamePrefab: {fileID: 4654711627010679995, guid: a5940e33b87b140489f047c50e9a87c0, type: 3}
   jeepMesh: {fileID: 6417533204929269039}
   networkName: 
@@ -851,7 +851,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Circuit: {fileID: 0}
   brakingSensitivity: 1
-  steeringSensitivity: 0.05
+  steeringSensitivity: 0.02
   AccelSensitivity: 0.3
   lookAhead: 10
 --- !u!114 &6417533204388716738
@@ -861,7 +861,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6417533204388716739}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1781d77c28d3981468f25e2c28158033, type: 3}
   m_Name: 

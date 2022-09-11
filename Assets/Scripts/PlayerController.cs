@@ -27,49 +27,47 @@ public class PlayerController : MonoBehaviour
     {
         drive.rb.gameObject.layer = 0;
 
-        this.GetComponent<Ghost>().HoverOff();
+        //this.GetComponent<Ghost>().HoverOff();
     }
 
     // Update is called once per frame
     void Update()
     {
-        accelInput = Input.GetAxis("Vertical");
-        streetAngleInput = Input.GetAxis("Horizontal");
-        brakeInput = Input.GetAxis("Jump");
-
-
-        if (Application.platform == RuntimePlatform.WindowsPlayer)
-        {
-    
-            accelInput = Input.GetAxis("Vertical");
-            streetAngleInput = Input.GetAxis("Horizontal");
-            brakeInput = Input.GetAxis("Jump");
-
-        }
-
+      
         if(Application.platform == RuntimePlatform.Android)
         {
 
             if (brakeInput == 0)
             {
-                accelInput = Mathf.Lerp(accelInput, mobileInputController.accel, Time.deltaTime * 2.5f);
+                accelInput = mobileInputController.accel;
+                //accelInput = Mathf.Lerp(accelInput, mobileInputController.accel, Time.deltaTime * 2.5f);
             }
 
             if (mobileInputController.horizontalLeft == 0)
             {
-                streetAngleInput = Mathf.Lerp(streetAngleInput, mobileInputController.horizontalRight, Time.deltaTime * 2.5f);
+                streetAngleInput = mobileInputController.horizontalRight;
+                //streetAngleInput = Mathf.Lerp(streetAngleInput, mobileInputController.horizontalRight, Time.deltaTime * 2.5f);
             }
             else if (mobileInputController.horizontalRight == 0)
             {
-                streetAngleInput = Mathf.Lerp(streetAngleInput, mobileInputController.horizontalLeft, Time.deltaTime * 2.5f);
+                streetAngleInput = mobileInputController.horizontalLeft;
+                //streetAngleInput = Mathf.Lerp(streetAngleInput, mobileInputController.horizontalLeft, Time.deltaTime * 2.5f);
             }
             else if (mobileInputController.horizontalLeft != 0 && mobileInputController.horizontalRight != 0)
             {
-                streetAngleInput = Mathf.Lerp(streetAngleInput, 0, Time.deltaTime * 2.5f);
+                streetAngleInput = 0;
+                //streetAngleInput = Mathf.Lerp(streetAngleInput, 0, Time.deltaTime * 2.5f);
             }
 
             brakeInput = mobileInputController.brake;
 
+        }
+        else
+        {
+
+                accelInput = Input.GetAxis("Vertical");
+                streetAngleInput = Input.GetAxis("Horizontal");
+                brakeInput = Input.GetAxis("Jump");
         }
 
         if (!RaceMonitor.isStartedRacing)
@@ -109,9 +107,9 @@ public class PlayerController : MonoBehaviour
 
             drive.rb.gameObject.layer = 6;
 
-            this.GetComponent<Ghost>().HoverOn();
+            //this.GetComponent<Ghost>().HoverOn();
 
-            Invoke("ResetCarLayer", 5);
+            Invoke("ResetCarLayer", 7);
         }
 
         if (Vector3.Distance(drive.rb.transform.position, checkPointManager.lastCheckPoint.transform.position) > 40 || drive.rb.transform.position.y < -5 || drive.rb.transform.position.y > 10)
@@ -121,9 +119,9 @@ public class PlayerController : MonoBehaviour
 
             drive.rb.gameObject.layer = 6;
 
-            this.GetComponent<Ghost>().HoverOn();
+            //this.GetComponent<Ghost>().HoverOn();
 
-            Invoke("ResetCarLayer", 5);
+            Invoke("ResetCarLayer", 7);
         }
 
         drive.Driving(accelInput, streetAngleInput, brakeInput);

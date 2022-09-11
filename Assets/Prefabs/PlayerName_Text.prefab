@@ -72,7 +72,7 @@ MonoBehaviour:
   m_text: Player Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 704722d57dac3ec46b95b9ab600c8730, type: 2}
-  m_sharedMaterial: {fileID: -2210525876572520248, guid: 673baeab28f9dbf49b9464dddf52dfcd, type: 2}
+  m_sharedMaterial: {fileID: -8993360674884689768, guid: 704722d57dac3ec46b95b9ab600c8730, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -232,7 +232,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 673baeab28f9dbf49b9464dddf52dfcd, type: 2}
   m_sharedMaterial: {fileID: -2210525876572520248, guid: 673baeab28f9dbf49b9464dddf52dfcd, type: 2}

@@ -3356,7 +3356,7 @@ GameObject:
   - component: {fileID: 3572547042972971132}
   - component: {fileID: 3572547042972971135}
   m_Layer: 0
-  m_Name: JeepGreen
+  m_Name: JeepGreenAI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3386,7 +3386,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4151035459602005016}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5cd75eafc5516e40b98797476688652, type: 3}
   m_Name: 
@@ -3425,7 +3425,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4151035459602005016}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19b59728c7d0e1c41a34401d0c47fce6, type: 3}
   m_Name: 

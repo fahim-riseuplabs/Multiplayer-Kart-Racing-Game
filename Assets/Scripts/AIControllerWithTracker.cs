@@ -73,7 +73,7 @@ public class AIControllerWithTracker : MonoBehaviour
     {
         drive.rb.gameObject.layer = 0;
 
-        this.GetComponent<Ghost>().HoverOff();
+        //this.GetComponent<Ghost>().HoverOff();
     }
 
     // Update is called once per frame
@@ -126,9 +126,9 @@ public class AIControllerWithTracker : MonoBehaviour
             //tracker.transform.position = drive.rb.gameObject.transform.position;
             drive.rb.gameObject.layer = 6;
 
-            this.GetComponent<Ghost>().HoverOn();
+            //this.GetComponent<Ghost>().HoverOn();
 
-            Invoke("ResetCarLayer", 5);
+            Invoke("ResetCarLayer", 7);
         }
 
         if (Time.time < avoidDetector.avoidTime)

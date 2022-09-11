@@ -1,3 +1,5 @@
+using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -199,9 +201,13 @@ public class Drive : MonoBehaviour
                 nameUIController.nameText.text = nameNPC[Random.Range(0, nameNPC.Length)];
             }
         }
+        else if(PhotonNetwork.IsConnected)
+        {
+            nameUIController.nameText.text = PhotonNetwork.LocalPlayer.NickName;
+        }
         else
         {
-            nameUIController.nameText.text =PlayerPrefs.GetString("PlayerName");
+            nameUIController.nameText.text = PlayerPrefs.GetString("PlayerName");
         }
 
         nameUIController.carRend = jeepMesh;

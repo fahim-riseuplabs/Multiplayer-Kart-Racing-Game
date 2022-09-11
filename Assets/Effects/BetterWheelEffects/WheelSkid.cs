@@ -50,7 +50,7 @@ public class WheelSkid : MonoBehaviour
     {
        
 
-        if (wheelCollider.GetGroundHit(out wheelHitInfo) && rb.velocity.magnitude > 5f)
+        if (wheelCollider.GetGroundHit(out wheelHitInfo) && rb.velocity.magnitude > 7f)
         {
             print(rb.velocity.magnitude);
             // Check sideways speed

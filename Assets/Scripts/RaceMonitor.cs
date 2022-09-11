@@ -1,26 +1,26 @@
 using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Photon.Pun.UtilityScripts;
 
 public class RaceMonitor : MonoBehaviourPunCallbacks
 {
     public GameObject[] countDownImages;
 
     public static bool isStartedRacing = false;
-    public static int totalLaps = 3;
+    public static bool isCountDownStarter = false;
+
+    public static int totalLaps = 2;
 
     public int playerSelectedCarIndex;
     public int spwanIndex;
 
     public GameObject panelHUD;
     public GameObject gameOverPanel;
-    //public GameObject quitButton;
 
     public GameObject[] carPrefabs;
+    public string[] carAIPrefabsName;
 
     public GameObject startButton;
 
@@ -41,7 +41,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-       if(Application.platform == RuntimePlatform.Android)
+        if (Application.platform == RuntimePlatform.Android)
         {
             mobileControllerUI.SetActive(true);
         }
@@ -51,6 +51,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         }
 
         isStartedRacing = false;
+        isCountDownStarter = false;
 
         spawnPoints = GameObject.FindGameObjectsWithTag("spawnpoint");
 
@@ -65,23 +66,9 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         waitingText.SetActive(false);
 
         playerSelectedCarIndex = PlayerPrefs.GetInt("PlayerCarIndex", 0);
-        int randomSpawnPointIndex = Random.Range(0, spawnPoints.Length - 1);
-        startPos = spawnPoints[randomSpawnPointIndex].transform.position;
-        startRot = spawnPoints[randomSpawnPointIndex].transform.rotation;
-
 
         if (PhotonNetwork.IsConnected)
         {
-            //quitButton.SetActive(true);
-
-            startPos = spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber-1].transform.position;
-            startRot = spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber-1].transform.rotation;
-
-            if (NetworkedPlayer.localPlayerInstance == null)
-            {
-                playerCar = PhotonNetwork.Instantiate(carPrefabs[playerSelectedCarIndex++].name, startPos, startRot, 0);
-            }
-
             if (PhotonNetwork.IsMasterClient)
             {
                 startButton.SetActive(true);
@@ -93,7 +80,9 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         }
         else
         {
-            //quitButton.SetActive(true);
+            int randomSpawnPointIndex = Random.Range(0, spawnPoints.Length - 1);
+            startPos = spawnPoints[randomSpawnPointIndex].transform.position;
+            startRot = spawnPoints[randomSpawnPointIndex].transform.rotation;
 
             playerCar = Instantiate(carPrefabs[playerSelectedCarIndex]);
 
@@ -112,17 +101,23 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
             }
 
             StartRace();
+
+            playerCar.GetComponent<AIControllerWithTracker>().enabled = false;
+            playerCar.GetComponent<Drive>().enabled = true;
+            playerCar.GetComponent<PlayerController>().enabled = true;
+
+            SmoothFollow.playerCar = playerCar.transform;
         }
-
-        playerCar.GetComponent<AIControllerWithTracker>().enabled = false;
-        playerCar.GetComponent<Drive>().enabled = true;
-        playerCar.GetComponent<PlayerController>().enabled = true;
-
-        SmoothFollow.playerCar = playerCar.transform;
     }
 
     private void RaceBegin()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("Instantiate", RpcTarget.All, null);
+            photonView.RPC("StartRace", RpcTarget.All, null);
+        }
+
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
@@ -135,19 +130,38 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
             object[] intanceData = new object[1];
             intanceData[0] = (string)nameNPC[Random.Range(0, nameNPC.Length)];
 
-            GameObject AIcar = PhotonNetwork.Instantiate(carPrefabs[random].name, spawnPoints[i].transform.position, spawnPoints[i].transform.rotation, 0, intanceData);
-            AIcar.GetComponent<AIControllerWithTracker>().enabled = true;
-            AIcar.GetComponent<Drive>().enabled = true;
+            GameObject AIcar = PhotonNetwork.InstantiateRoomObject(carAIPrefabsName[random], spawnPoints[i].transform.position, spawnPoints[i].transform.rotation, 0, intanceData);
             AIcar.GetComponent<Drive>().networkName = (string)intanceData[0];
-            AIcar.GetComponent<PlayerController>().enabled = false;
         }
+    }
 
-        if (PhotonNetwork.IsMasterClient)
+    [PunRPC]
+    private void Instantiate()
+    {
+        int index = 0;
+
+        foreach (Player player in PhotonNetwork.PlayerList)
         {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.CurrentRoom.IsVisible = false;
+            if (player == PhotonNetwork.LocalPlayer)
+            {
+                startPos = spawnPoints[index].transform.position;
+                startRot = spawnPoints[index].transform.rotation;
 
-            photonView.RPC("StartRace", RpcTarget.All, null);
+                if (NetworkedPlayer.localPlayerInstance == null)
+                {
+                    playerCar = PhotonNetwork.Instantiate(carPrefabs[playerSelectedCarIndex++].name, startPos, startRot, 0);
+                }
+
+                playerCar.GetComponent<AIControllerWithTracker>().enabled = false;
+                playerCar.GetComponent<Drive>().enabled = true;
+                playerCar.GetComponent<PlayerController>().enabled = true;
+
+                SmoothFollow.playerCar = playerCar.transform;
+
+                break;
+            }
+
+            index++;
         }
     }
 
@@ -155,6 +169,9 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     private void StartRace()
     {
         waitingText.SetActive(false);
+
+        isCountDownStarter = true;
+
         StartCoroutine(PlayCountDownAnimation());
         startButton.SetActive(false);
 
@@ -186,8 +203,6 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         }
 
         isStartedRacing = true;
-
-        //quitButton.SetActive(true);
     }
 
     private void LateUpdate()
@@ -211,7 +226,6 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         {
             print("GameOver");
             panelHUD.SetActive(false);
-            //quitButton.SetActive(false);
             gameOverPanel.SetActive(true);
         }
     }
@@ -244,27 +258,11 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
             return;
         }
 
-        //int index = 0;
-
-        //foreach(Player player in PhotonNetwork.PlayerList)
-        //{
-        //    if (player == PhotonNetwork.LocalPlayer)
-        //    {
-
-        //        playerCar.SetActive(false);
-        //        playerCar.transform.position = spawnPoints[index].transform.position;
-        //        playerCar.transform.rotation = spawnPoints[index].transform.rotation;
-        //        playerCar.SetActive(true);
-        //        break;
-        //    }
-
-        //    index++;
-        //}
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        if (PhotonNetwork.IsMasterClient && !isStartedRacing)
+        if (PhotonNetwork.IsMasterClient && !isCountDownStarter)
         {
             waitingText.SetActive(false);
             startButton.SetActive(true);
@@ -273,6 +271,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        PlayerPrefs.SetString("PlayerName", PhotonNetwork.LocalPlayer.NickName);
         PhotonNetwork.LoadLevel("MainMenu");
 
     }
@@ -309,5 +308,5 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         }
     }
 
-   
+
 }

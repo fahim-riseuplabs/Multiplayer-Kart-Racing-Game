@@ -34,7 +34,7 @@ public class SmoothFollow : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if (!RaceMonitor.isStartedRacing)
+        if (RaceMonitor.isCountDownStarter && target == null)
         {
             GameObject[] cars = GameObject.FindGameObjectsWithTag("car");
             target = new Transform[cars.Length];
@@ -43,7 +43,7 @@ public class SmoothFollow : MonoBehaviour
             {
                 target[i] = cars[i].transform;
 
-                if(target[i] == playerCar)
+                if (target[i] == playerCar)
                 {
                     index = i;
                 }
@@ -51,6 +51,11 @@ public class SmoothFollow : MonoBehaviour
 
             target[index].Find("RearCamera").gameObject.GetComponent<Camera>().targetTexture = (rearCamerView.texture as RenderTexture);
 
+        }
+
+        if (target == null)
+        {
+            return;
         }
 
         if (target[index] == null)
@@ -65,6 +70,7 @@ public class SmoothFollow : MonoBehaviour
         }
         else
         {
+            
             wantedRotationAngle = target[index].eulerAngles.y;
             wantedHeight = target[index].position.y + height;
 
