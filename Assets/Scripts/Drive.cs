@@ -201,11 +201,11 @@ public class Drive : MonoBehaviour
                 nameUIController.nameText.text = nameNPC[Random.Range(0, nameNPC.Length)];
             }
         }
-        else if(PhotonNetwork.IsConnected)
+        else if(PhotonNetwork.IsConnected && !GetComponent<AIControllerWithTracker>().enabled)
         {
             nameUIController.nameText.text = PhotonNetwork.LocalPlayer.NickName;
         }
-        else
+        else if (!PhotonNetwork.IsConnected)
         {
             nameUIController.nameText.text = PlayerPrefs.GetString("PlayerName");
         }

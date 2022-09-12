@@ -115,8 +115,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             photonView.RPC("Instantiate", RpcTarget.All, null);
-            photonView.RPC("StartRace", RpcTarget.All, null);
-        }
+        
 
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
@@ -132,6 +131,10 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
 
             GameObject AIcar = PhotonNetwork.InstantiateRoomObject(carAIPrefabsName[random], spawnPoints[i].transform.position, spawnPoints[i].transform.rotation, 0, intanceData);
             AIcar.GetComponent<Drive>().networkName = (string)intanceData[0];
+        }
+
+       
+            photonView.RPC("StartRace", RpcTarget.All, null);
         }
     }
 
