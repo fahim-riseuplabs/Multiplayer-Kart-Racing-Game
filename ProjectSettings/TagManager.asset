@@ -10,6 +10,7 @@ TagManager:
   - circut
   - skidmarks
   - spawnpoint
+  - skid
   layers:
   - Default
   - TransparentFX

@@ -37,10 +37,14 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     private Vector3 startPos;
     private Quaternion startRot;
 
+    private SmoothFollow smoothFollow;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        smoothFollow = FindObjectOfType<SmoothFollow>();
+
         if (Application.platform == RuntimePlatform.Android)
         {
             mobileControllerUI.SetActive(true);
@@ -106,7 +110,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
             playerCar.GetComponent<Drive>().enabled = true;
             playerCar.GetComponent<PlayerController>().enabled = true;
 
-            SmoothFollow.playerCar = playerCar.transform;
+            smoothFollow.playerCar = playerCar.transform;
         }
     }
 
@@ -159,7 +163,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
                 playerCar.GetComponent<Drive>().enabled = true;
                 playerCar.GetComponent<PlayerController>().enabled = true;
 
-                SmoothFollow.playerCar = playerCar.transform;
+                smoothFollow.playerCar = playerCar.transform;
 
                 break;
             }
@@ -172,8 +176,6 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     private void StartRace()
     {
         waitingText.SetActive(false);
-
-        isCountDownStarter = true;
 
         StartCoroutine(PlayCountDownAnimation());
         startButton.SetActive(false);
@@ -197,6 +199,8 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     IEnumerator PlayCountDownAnimation()
     {
         yield return new WaitForSeconds(2f);
+
+        isCountDownStarter = true;
 
         foreach (GameObject countDownImage in countDownImages)
         {
@@ -258,9 +262,12 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
 
         if (isStartedRacing)
         {
-            return;
+            smoothFollow.FindCars();
         }
 
+        string playerNameUI = otherPlayer.NickName  + otherPlayer.ActorNumber;
+
+        Destroy(GameObject.Find(playerNameUI));
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)

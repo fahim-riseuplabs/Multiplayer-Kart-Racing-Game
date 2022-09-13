@@ -41,7 +41,7 @@ public class AIControllerWithTracker : MonoBehaviour
         finishedSteer = Random.Range(-1.0f, 1.0f);
         if (checkPointManager != null)
         {
-            print("checkPointManager");
+            
         }
     }
 

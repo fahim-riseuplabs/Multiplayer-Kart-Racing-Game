@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     private float accelInput;
     private float streetAngleInput;
     private float brakeInput;
+    private float prevTorque;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -124,8 +126,20 @@ public class PlayerController : MonoBehaviour
             Invoke("ResetCarLayer", 7);
         }
 
+        float speedFactor = drive.currentSpeed / drive.maxSpeed;
+
+        prevTorque = drive.torque;
+
+        if (speedFactor < 0.3f && drive.rb.transform.forward.y > 0.1f)
+        {
+            drive.torque *= 5f;
+            
+        }
+       
         drive.Driving(accelInput, streetAngleInput, brakeInput);
         drive.CheckForSKid();
         drive.CalculateEngineSound();
+
+        drive.torque = prevTorque;
     }
 }

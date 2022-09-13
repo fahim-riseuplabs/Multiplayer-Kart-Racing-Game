@@ -12,8 +12,7 @@ public class WheelSkid : MonoBehaviour
     Rigidbody rb;
     [SerializeField]
     Skidmarks skidmarksController;
-    [SerializeField]
-    Drive drive;
+
     // END INSPECTOR SETTINGS
 
     WheelCollider wheelCollider;
@@ -48,11 +47,9 @@ public class WheelSkid : MonoBehaviour
 
     protected void LateUpdate()
     {
-       
 
-        if (wheelCollider.GetGroundHit(out wheelHitInfo) && rb.velocity.magnitude > 7f)
+        if (wheelCollider.GetGroundHit(out wheelHitInfo) && rb.transform.position.y<1f)
         {
-            print(rb.velocity.magnitude);
             // Check sideways speed
 
             // Gives velocity with +z being the car's forward axis

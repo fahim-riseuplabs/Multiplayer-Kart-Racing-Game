@@ -1138,7 +1138,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 3423525289665463713}
   skidmarksController: {fileID: 0}
-  drive: {fileID: 0}
 --- !u!1 &3423525289867997563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,7 +1215,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 3423525289665463713}
   skidmarksController: {fileID: 0}
-  drive: {fileID: 0}
 --- !u!1 &3423525289904653747
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,7 +1365,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 3423525289665463713}
   skidmarksController: {fileID: 0}
-  drive: {fileID: 0}
 --- !u!1 &3423525290157276391
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,7 +1735,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 3423525289665463713}
   skidmarksController: {fileID: 0}
-  drive: {fileID: 0}
 --- !u!1 &3423525290409378955
 GameObject:
   m_ObjectHideFlags: 0

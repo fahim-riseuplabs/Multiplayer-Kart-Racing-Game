@@ -11,9 +11,9 @@ public class SmoothFollow : MonoBehaviour
     public float rotationDamping = 2.0f;
     public float rotationOffset = 5.0f;
 
-    public static Transform playerCar;
+    public Transform playerCar;
 
-    private Transform[] target;
+    private Transform[] target = null;
     public RawImage rearCamerView;
     private int index = 0;
 
@@ -27,6 +27,8 @@ public class SmoothFollow : MonoBehaviour
 
     private void Start()
     {
+        target = null;
+
         if (PlayerPrefs.HasKey("FP"))
         {
             FP = PlayerPrefs.GetInt("FP", -1);
@@ -36,21 +38,7 @@ public class SmoothFollow : MonoBehaviour
     {
         if (RaceMonitor.isCountDownStarter && target == null)
         {
-            GameObject[] cars = GameObject.FindGameObjectsWithTag("car");
-            target = new Transform[cars.Length];
-
-            for (int i = 0; i < cars.Length; i++)
-            {
-                target[i] = cars[i].transform;
-
-                if (target[i] == playerCar)
-                {
-                    index = i;
-                }
-            }
-
-            target[index].Find("RearCamera").gameObject.GetComponent<Camera>().targetTexture = (rearCamerView.texture as RenderTexture);
-
+            FindCars();
         }
 
         if (target == null)
@@ -92,6 +80,27 @@ public class SmoothFollow : MonoBehaviour
 
     }
 
+    public void FindCars()
+    {
+        target = null;
+        index = 0;
+       
+        GameObject[] cars = GameObject.FindGameObjectsWithTag("car");
+        target = new Transform[cars.Length];
+
+        for (int i = 0; i < cars.Length; i++)
+        {
+            target[i] = cars[i].transform;
+
+            if (cars[i].transform == playerCar)
+            {
+                index = i;
+
+            }
+        }
+
+        target[index].Find("RearCamera").gameObject.GetComponent<Camera>().targetTexture = (rearCamerView.texture as RenderTexture);
+    }
     private void CamAngleChange()
     {
         FP = FP * -1;
