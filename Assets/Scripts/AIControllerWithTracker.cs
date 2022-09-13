@@ -73,6 +73,11 @@ public class AIControllerWithTracker : MonoBehaviour
     {
         drive.rb.gameObject.layer = 0;
 
+        foreach (WheelCollider wheelCollider in drive.wheelColliders)
+        {
+            wheelCollider.gameObject.layer = 0;
+        }
+
         //this.GetComponent<Ghost>().HoverOff();
     }
 
@@ -118,8 +123,10 @@ public class AIControllerWithTracker : MonoBehaviour
 
             drive.rb.gameObject.transform.rotation = tracker.transform.rotation;
 
-
-
+            foreach(WheelCollider wheelCollider in drive.wheelColliders)
+            {
+                wheelCollider.gameObject.layer = 6;
+            }
 
             //drive.rb.gameObject.transform.position = Circuit.wayPoints[ResetCurrentTrakerWP].transform.position + Vector3.up + new Vector3(Random.Range(-1, 1), 0,Random.Range(-1, 1));
 

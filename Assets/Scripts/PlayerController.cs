@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour
 
     void ResetCarLayer()
     {
+        foreach (WheelCollider wheelCollider in drive.wheelColliders)
+        {
+            wheelCollider.gameObject.layer = 0;
+        }
+
         drive.rb.gameObject.layer = 0;
 
         //this.GetComponent<Ghost>().HoverOff();
@@ -107,6 +112,11 @@ public class PlayerController : MonoBehaviour
             //drive.rb.transform.position = lastPosition + new Vector3(Random.Range(-2, 2), 0.25f, Random.Range(-2, 2));
             //drive.rb.transform.rotation = lastRotation * Quaternion.Euler(1, Random.Range(-180, 180), 1);
 
+            foreach (WheelCollider wheelCollider in drive.wheelColliders)
+            {
+                wheelCollider.gameObject.layer = 6;
+            }
+
             drive.rb.gameObject.layer = 6;
 
             //this.GetComponent<Ghost>().HoverOn();
@@ -118,6 +128,11 @@ public class PlayerController : MonoBehaviour
         {
             drive.rb.transform.position = checkPointManager.lastCheckPoint.transform.position + Vector3.up * 2;
             drive.rb.transform.rotation = checkPointManager.lastCheckPoint.transform.rotation;
+
+            foreach (WheelCollider wheelCollider in drive.wheelColliders)
+            {
+                wheelCollider.gameObject.layer = 6;
+            }
 
             drive.rb.gameObject.layer = 6;
 

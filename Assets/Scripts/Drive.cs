@@ -39,6 +39,7 @@ public class Drive : MonoBehaviour
     public Renderer jeepMesh;
     public string networkName = "";
 
+    private Transform playerNameParentUI;
     private Vector3 wheelColiderPosition;
     private Quaternion WheelColiderQuaternion;
     private NameUIController nameUIController;
@@ -178,6 +179,9 @@ public class Drive : MonoBehaviour
 
     private void Start()
     {
+        playerNameParentUI = GameObject.Find("PlayerNameParentUI").transform;
+
+
         for (int i = 0; i < 4; i++)
         {
             skidSmokes[i] = Instantiate(smokePrefab);
@@ -187,6 +191,9 @@ public class Drive : MonoBehaviour
         brakeLight.SetActive(false);
 
         GameObject playerName = Instantiate(playerNamePrefab);
+
+        playerName.transform.SetParent(playerNameParentUI);
+
         nameUIController = playerName.GetComponent<NameUIController>();
         nameUIController.target = rb.transform;
 

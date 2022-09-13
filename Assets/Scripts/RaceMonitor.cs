@@ -33,6 +33,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
 
     private GameObject[] spawnPoints;
     private GameObject playerCar = null;
+ 
 
     private Vector3 startPos;
     private Quaternion startRot;
@@ -43,6 +44,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+       
         smoothFollow = FindObjectOfType<SmoothFollow>();
 
         if (Application.platform == RuntimePlatform.Android)
