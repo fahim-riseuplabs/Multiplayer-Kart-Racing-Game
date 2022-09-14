@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
 public class NameUIController : MonoBehaviour
 {
@@ -48,20 +45,24 @@ public class NameUIController : MonoBehaviour
             isCarRego = true;
             return;
         }
-     
+
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
         carInView = GeometryUtility.TestPlanesAABB(planes, carRend.bounds);
-        
+
         canvasGroup.alpha = carInView ? 1 : 0;
 
-        transform.position = Camera.main.WorldToScreenPoint(target.position+target.up*2);
+        transform.position = Camera.main.WorldToScreenPoint(target.position + target.up * 2);
 
-        Leaderboard.SetPosition(carRego, checkPointManager.lap, checkPointManager.checkPoint,checkPointManager.enteredTime);
+        Leaderboard.SetPosition(carRego, checkPointManager.lap, checkPointManager.checkPoint, checkPointManager.enteredTime);
         position = Leaderboard.GetPosition(carRego);
 
         if (checkPointManager != null)
         {
-            lapDetailsDisplay.text = $" {position} ";
+            if (checkPointManager.checkPoint >=0)
+            {
+                lapDetailsDisplay.gameObject.SetActive(true);
+                lapDetailsDisplay.text = $" {position} ";
+            }
         }
     }
 }

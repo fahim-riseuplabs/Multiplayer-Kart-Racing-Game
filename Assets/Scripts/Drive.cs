@@ -1,7 +1,5 @@
 using Photon.Pun;
 using Photon.Realtime;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Drive : MonoBehaviour
@@ -27,12 +25,14 @@ public class Drive : MonoBehaviour
     public Rigidbody rb;
     public float gearLenght = 3;
     public float currentSpeed { get { return rb.velocity.magnitude * gearLenght; } }
-    public float lowPitch=1f;
+    public float lowPitch = 1f;
     public float highPitch = 6f;
     public int numberGears = 5;
     private float rpm;
     private int currentGear = 1;
     private float currentGearPerc;
+    private float streetAngle ;
+    private float breakTorque;
     public float maxSpeed = 200;
 
     public GameObject playerNamePrefab;
@@ -44,7 +44,9 @@ public class Drive : MonoBehaviour
     private Quaternion WheelColiderQuaternion;
     private NameUIController nameUIController;
     private string[] nameNPC = { "Ratul", "Rafiq", "Masud", "Emraan", "Ovi", "Sunny", "Sumon" };
-    
+
+    private PhotonView photonView;
+
     public void CalculateEngineSound()
     {
         float gearPercentage = (1 / (float)numberGears);
@@ -59,7 +61,8 @@ public class Drive : MonoBehaviour
         float upperGearMax = (1 / (float)numberGears) * (currentGear + 1);
         float downGearMax = (1 / (float)numberGears) * currentGear;
 
-        if(currentGear>0 && speedPercentage < downGearMax){
+        if (currentGear > 0 && speedPercentage < downGearMax)
+        {
             currentGear--;
         }
 
@@ -72,7 +75,20 @@ public class Drive : MonoBehaviour
         highAccelAudio.pitch = Mathf.Min(highPitch, pitch) * 0.25f;
     }
 
-    public void Driving(float accelInput, float streetAngleInput, float brakeTorqueInput ) {
+    [PunRPC]
+    private void BrakeLightOff()
+    {
+        brakeLight.SetActive(false);
+    }
+
+    [PunRPC]
+    private void BrakeLightOn()
+    {
+        brakeLight.SetActive(true);
+    }
+
+    public void Driving(float accelInput, float streetAngleInput, float brakeTorqueInput)
+    {
         accelInput = Mathf.Clamp(accelInput, -1, 1);
         streetAngleInput = Mathf.Clamp(streetAngleInput, -1, 1);
         brakeTorqueInput = Mathf.Clamp(brakeTorqueInput, 0, 1);
@@ -84,19 +100,33 @@ public class Drive : MonoBehaviour
             thurstTorque = accelInput * torque;
         }
 
-        float streetAngle = streetAngleInput * maxStreetAngle;
-        float breakTorque = brakeTorqueInput * maxBrakeTorque;
+        streetAngle = streetAngleInput * maxStreetAngle;
+        breakTorque = brakeTorqueInput * maxBrakeTorque;
 
         if (breakTorque != 0)
         {
-            brakeLight.SetActive(true);
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("BrakeLightOn", RpcTarget.All, null);
+            }
+            else
+            {
+                brakeLight.SetActive(true);
+            }
         }
         else
         {
-            brakeLight.SetActive(false);
+            if (PhotonNetwork.IsConnected)
+            {
+                photonView.RPC("BrakeLightOff", RpcTarget.All, null);
+            }
+            else
+            {
+                brakeLight.SetActive(false);
+            }
         }
-
-        for (int i=0; i < wheelColliders.Length; i++)
+       
+        for (int i = 0; i < wheelColliders.Length; i++)
         {
             wheelColliders[i].motorTorque = thurstTorque;
 
@@ -105,7 +135,7 @@ public class Drive : MonoBehaviour
                 wheelColliders[i].steerAngle = streetAngle;
                 wheelColliders[i].brakeTorque = breakTorque;
             }
-            
+
             //wheelColliders[i].GetWorldPose(out wheelColiderPosition, out WheelColiderQuaternion);
 
             //wheels[i].position = wheelColiderPosition;
@@ -116,7 +146,7 @@ public class Drive : MonoBehaviour
     public void CheckForSKid()
     {
         int skidNumber = 0;
-       
+
         for (int i = 0; i < 4; i++)
         {
             WheelHit wheelHit;
@@ -127,10 +157,10 @@ public class Drive : MonoBehaviour
                 skidNumber++;
                 if (!skidAudioSource.isPlaying)
                 {
-                    skidAudioSource.Play();   
+                    skidAudioSource.Play();
                 }
 
-                skidSmokes[i].transform.position = new Vector3(0,0.5f,0)+(wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius);
+                skidSmokes[i].transform.position = new Vector3(0, 0.5f, 0) + (wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius);
                 skidSmokes[i].Emit(1);
                 //SkidTrailStart(i);
             }
@@ -140,7 +170,7 @@ public class Drive : MonoBehaviour
             }
         }
 
-        if(skidNumber==0 && skidAudioSource.isPlaying)
+        if (skidNumber == 0 && skidAudioSource.isPlaying)
         {
             skidAudioSource.Stop();
         }
@@ -148,7 +178,7 @@ public class Drive : MonoBehaviour
 
     public void SkidTrailStart(int i)
     {
-        if(skidTrails[i] == null)
+        if (skidTrails[i] == null)
         {
             skidTrails[i] = Instantiate(skidTrailPrefab);
 
@@ -177,7 +207,7 @@ public class Drive : MonoBehaviour
     private void Start()
     {
         playerNameParentUI = GameObject.Find("PlayerNameParentUI").transform;
-
+        photonView = GetComponent<PhotonView>();
 
         for (int i = 0; i < 4; i++)
         {
@@ -205,7 +235,7 @@ public class Drive : MonoBehaviour
                 nameUIController.nameText.text = nameNPC[Random.Range(0, nameNPC.Length)];
             }
         }
-        else if(PhotonNetwork.IsConnected && !GetComponent<AIControllerWithTracker>().enabled)
+        else if (PhotonNetwork.IsConnected && !GetComponent<AIControllerWithTracker>().enabled)
         {
             nameUIController.nameText.text = PhotonNetwork.LocalPlayer.NickName;
         }
