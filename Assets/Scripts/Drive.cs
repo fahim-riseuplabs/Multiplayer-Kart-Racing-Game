@@ -103,12 +103,9 @@ public class Drive : MonoBehaviour
             if (i < 2)
             {
                 wheelColliders[i].steerAngle = streetAngle;
-            }
-            else
-            {
                 wheelColliders[i].brakeTorque = breakTorque;
             }
-
+            
             //wheelColliders[i].GetWorldPose(out wheelColiderPosition, out WheelColiderQuaternion);
 
             //wheels[i].position = wheelColiderPosition;
@@ -125,7 +122,7 @@ public class Drive : MonoBehaviour
             WheelHit wheelHit;
             wheelColliders[i].GetGroundHit(out wheelHit);
 
-            if (Mathf.Abs(wheelHit.forwardSlip) >= 0.4f || Mathf.Abs(wheelHit.sidewaysSlip) >= 0.4f)
+            if (Mathf.Abs(wheelHit.forwardSlip) >= 0.5f || Mathf.Abs(wheelHit.sidewaysSlip) >= 0.25f)
             {
                 skidNumber++;
                 if (!skidAudioSource.isPlaying)
@@ -133,7 +130,7 @@ public class Drive : MonoBehaviour
                     skidAudioSource.Play();   
                 }
 
-                skidSmokes[i].transform.position = wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius;
+                skidSmokes[i].transform.position = new Vector3(0,0.5f,0)+(wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius);
                 skidSmokes[i].Emit(1);
                 //SkidTrailStart(i);
             }
@@ -230,5 +227,4 @@ public class Drive : MonoBehaviour
             wheels[i].localRotation = WheelColiderQuaternion;
         }
     }
-
 }
