@@ -1,5 +1,4 @@
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
 
 public class Drive : MonoBehaviour
@@ -31,7 +30,7 @@ public class Drive : MonoBehaviour
     private float rpm;
     private int currentGear = 1;
     private float currentGearPerc;
-    private float streetAngle ;
+    private float streetAngle;
     private float breakTorque;
     public float maxSpeed = 200;
 
@@ -87,6 +86,23 @@ public class Drive : MonoBehaviour
         brakeLight.SetActive(true);
     }
 
+    [PunRPC]
+    private void InstantiateSmoke()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            skidSmokes[i] = Instantiate(smokePrefab);
+            skidSmokes[i].Stop();
+        }
+    }
+
+    [PunRPC]
+    private void EmitSmoke(Vector3 postion, int i)
+    {
+        skidSmokes[i].transform.position = postion;
+        skidSmokes[i].Emit(1);
+    }
+
     public void Driving(float accelInput, float streetAngleInput, float brakeTorqueInput)
     {
         accelInput = Mathf.Clamp(accelInput, -1, 1);
@@ -125,7 +141,7 @@ public class Drive : MonoBehaviour
                 brakeLight.SetActive(false);
             }
         }
-       
+
         for (int i = 0; i < wheelColliders.Length; i++)
         {
             wheelColliders[i].motorTorque = thurstTorque;
@@ -160,8 +176,17 @@ public class Drive : MonoBehaviour
                     skidAudioSource.Play();
                 }
 
-                skidSmokes[i].transform.position = new Vector3(0, 0.5f, 0) + (wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius);
-                skidSmokes[i].Emit(1);
+                if (PhotonNetwork.IsConnected)
+                {
+                    Vector3 position = new Vector3(0, 0.5f, 0) + (wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius);
+                    photonView.RPC("EmitSmoke", RpcTarget.All, position, i);
+                }
+                else
+                {
+                    skidSmokes[i].transform.position = new Vector3(0, 0.5f, 0) + (wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius);
+                    skidSmokes[i].Emit(1);
+                }
+
                 //SkidTrailStart(i);
             }
             else
@@ -209,10 +234,17 @@ public class Drive : MonoBehaviour
         playerNameParentUI = GameObject.Find("PlayerNameParentUI").transform;
         photonView = GetComponent<PhotonView>();
 
-        for (int i = 0; i < 4; i++)
+        if (PhotonNetwork.IsConnected)
         {
-            skidSmokes[i] = Instantiate(smokePrefab);
-            skidSmokes[i].Stop();
+            photonView.RPC("InstantiateSmoke", RpcTarget.All, null); 
+        }
+        else
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                skidSmokes[i] = Instantiate(smokePrefab);
+                skidSmokes[i].Stop();
+            }
         }
 
         brakeLight.SetActive(false);
