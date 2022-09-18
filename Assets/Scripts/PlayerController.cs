@@ -8,7 +8,6 @@ public class PlayerController : MonoBehaviour
     private Vector3 lastPosition;
     private Quaternion lastRotation;
     private CheckPointManager checkPointManager;
-    private MobileInputController mobileInputController;
     private float finishedSteer;
 
     private float accelInput;
@@ -19,7 +18,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mobileInputController = FindObjectOfType<MobileInputController>();
         drive = GetComponent<Drive>();
         checkPointManager = drive.rb.GetComponent<CheckPointManager>();
         finishedSteer = Random.Range(-1, 1);
@@ -43,31 +41,32 @@ public class PlayerController : MonoBehaviour
       
         if(Application.platform == RuntimePlatform.Android)
         {
+            accelInput = MobileInputController.accel;
 
-            if (brakeInput == 0)
+            //accelInput = Mathf.Lerp(accelInput, MobileInputController.accel, Time.deltaTime * 10f);
+
+            if (MobileInputController.horizontalLeft == 0)
             {
-                accelInput = mobileInputController.accel;
-                //accelInput = Mathf.Lerp(accelInput, mobileInputController.accel, Time.deltaTime * 2.5f);
+                //streetAngleInput = MobileInputController.horizontalRight;
+                streetAngleInput = Mathf.Lerp(streetAngleInput, MobileInputController.horizontalRight, Time.deltaTime * 10f);
+            }
+            else if (MobileInputController.horizontalRight == 0)
+            {
+                //streetAngleInput = MobileInputController.horizontalLeft;
+                streetAngleInput = Mathf.Lerp(streetAngleInput, MobileInputController.horizontalLeft, Time.deltaTime * 10f);
+            }
+            else if (MobileInputController.horizontalLeft != 0 && MobileInputController.horizontalRight != 0)
+            {
+                //streetAngleInput = 0;
+                streetAngleInput = Mathf.Lerp(streetAngleInput, 0, Time.deltaTime * 10f);
+            }
+            else if (MobileInputController.horizontalLeft == 0 && MobileInputController.horizontalRight == 0)
+            {
+                //streetAngleInput = 0;
+                streetAngleInput = Mathf.Lerp(streetAngleInput, 0, Time.deltaTime * 10f);
             }
 
-            if (mobileInputController.horizontalLeft == 0)
-            {
-                streetAngleInput = mobileInputController.horizontalRight;
-                //streetAngleInput = Mathf.Lerp(streetAngleInput, mobileInputController.horizontalRight, Time.deltaTime * 2.5f);
-            }
-            else if (mobileInputController.horizontalRight == 0)
-            {
-                streetAngleInput = mobileInputController.horizontalLeft;
-                //streetAngleInput = Mathf.Lerp(streetAngleInput, mobileInputController.horizontalLeft, Time.deltaTime * 2.5f);
-            }
-            else if (mobileInputController.horizontalLeft != 0 && mobileInputController.horizontalRight != 0)
-            {
-                streetAngleInput = 0;
-                //streetAngleInput = Mathf.Lerp(streetAngleInput, 0, Time.deltaTime * 2.5f);
-            }
-
-            brakeInput = mobileInputController.brake;
-
+            brakeInput = MobileInputController.brake;
         }
         else
         {

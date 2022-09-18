@@ -5,18 +5,18 @@ using TMPro;
 
 public class MobileInputController : MonoBehaviour
 {
-    [HideInInspector] public float horizontalLeft;
-    [HideInInspector] public float horizontalRight;
-    [HideInInspector] public float accel;
-    [HideInInspector] public float brake;
+    [HideInInspector] public static float horizontalLeft;
+    [HideInInspector] public static float horizontalRight;
+    [HideInInspector] public static float accel;
+    [HideInInspector] public static float brake;
 
     public TextMeshProUGUI accelText;
 
     // Start is called before the first frame update
     void Start()
     {
-        accel = 1;
-        accelText.text = "D";
+        accel = 1f;
+        accelText.text = "R";
     }
 
     public void OnPointerDownLeft()
@@ -58,12 +58,12 @@ public class MobileInputController : MonoBehaviour
         if (accel ==-1)
         {
             accel = 1;
-            accelText.text = "D";
+            accelText.text = "R";
         }
         else 
         {
             accel = -1;
-            accelText.text = "R";
+            accelText.text = "D";
         }
     }
 

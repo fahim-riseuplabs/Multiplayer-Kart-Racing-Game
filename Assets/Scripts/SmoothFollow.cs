@@ -53,12 +53,12 @@ public class SmoothFollow : MonoBehaviour
 
         if (FP == 1)
         {
-            transform.position = target[index].transform.position + target[index].forward * 0.01f + target[index].up * 1.525f;
+            transform.position = target[index].transform.position + target[index].forward * 0.0125f + target[index].up * 1.15f;
             transform.LookAt(target[index].transform.position + target[index].forward * 7.5f);
         }
         else
         {
-            
+
             wantedRotationAngle = target[index].eulerAngles.y;
             wantedHeight = target[index].position.y + height;
 
@@ -84,7 +84,7 @@ public class SmoothFollow : MonoBehaviour
     {
         target = null;
         index = 0;
-       
+
         GameObject[] cars = GameObject.FindGameObjectsWithTag("car");
         target = new Transform[cars.Length];
 

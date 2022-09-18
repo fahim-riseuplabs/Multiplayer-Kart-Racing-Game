@@ -11,7 +11,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     public static bool isStartedRacing = false;
     public static bool isCountDownStarter = false;
 
-    public static int totalLaps = 2;
+    public static int totalLaps = 1;
 
     public int playerSelectedCarIndex;
     public int spwanIndex;
@@ -33,7 +33,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
 
     private GameObject[] spawnPoints;
     private GameObject playerCar = null;
- 
+
 
     private Vector3 startPos;
     private Quaternion startRot;
@@ -44,7 +44,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-       
+
         smoothFollow = FindObjectOfType<SmoothFollow>();
 
         if (Application.platform == RuntimePlatform.Android)
@@ -121,25 +121,25 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             photonView.RPC("Instantiate", RpcTarget.All, null);
-        
 
-        PhotonNetwork.CurrentRoom.IsOpen = false;
-        PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        string[] nameNPC = { "Ratul", "Rafiq", "Masud", "Emraan", "Ovi", "Sunny", "Sumon" };
-        int numAIPlayers = PhotonNetwork.CurrentRoom.MaxPlayers - PhotonNetwork.CurrentRoom.PlayerCount;
+            PhotonNetwork.CurrentRoom.IsOpen = false;
+            PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        for (int i = PhotonNetwork.CurrentRoom.PlayerCount; i < PhotonNetwork.CurrentRoom.MaxPlayers; i++)
-        {
-            int random = Random.Range(0, carPrefabs.Length);
-            object[] intanceData = new object[1];
-            intanceData[0] = (string)nameNPC[Random.Range(0, nameNPC.Length)];
+            string[] nameNPC = { "Ratul", "Rafiq", "Masud", "Emraan", "Ovi", "Sunny", "Sumon" };
+            int numAIPlayers = PhotonNetwork.CurrentRoom.MaxPlayers - PhotonNetwork.CurrentRoom.PlayerCount;
 
-            GameObject AIcar = PhotonNetwork.InstantiateRoomObject(carAIPrefabsName[random], spawnPoints[i].transform.position, spawnPoints[i].transform.rotation, 0, intanceData);
-            AIcar.GetComponent<Drive>().networkName = (string)intanceData[0];
-        }
+            for (int i = PhotonNetwork.CurrentRoom.PlayerCount; i < PhotonNetwork.CurrentRoom.MaxPlayers; i++)
+            {
+                int random = Random.Range(0, carPrefabs.Length);
+                object[] intanceData = new object[1];
+                intanceData[0] = (string)nameNPC[Random.Range(0, nameNPC.Length)];
 
-       
+                GameObject AIcar = PhotonNetwork.InstantiateRoomObject(carAIPrefabsName[random], spawnPoints[i].transform.position, spawnPoints[i].transform.rotation, 0, intanceData);
+                AIcar.GetComponent<Drive>().networkName = (string)intanceData[0];
+            }
+
+
             photonView.RPC("StartRace", RpcTarget.All, null);
         }
     }
@@ -180,8 +180,18 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         waitingText.SetActive(false);
 
         StartCoroutine(PlayCountDownAnimation());
-        startButton.SetActive(false);
 
+        startButton.SetActive(false);
+    }
+
+    [PunRPC]
+    private void Restart()
+    {
+        PhotonNetwork.LoadLevel("Track1");
+    }
+
+    private void GetCheckPointManagers()
+    {
         cars = GameObject.FindGameObjectsWithTag("car");
 
         checkPointManagers = new CheckPointManager[cars.Length];
@@ -192,15 +202,11 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
-    private void Restart()
-    {
-        PhotonNetwork.LoadLevel("Track1");
-    }
-
     IEnumerator PlayCountDownAnimation()
     {
         yield return new WaitForSeconds(2f);
+
+        GetCheckPointManagers();
 
         isCountDownStarter = true;
 
@@ -267,7 +273,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
             smoothFollow.FindCars();
         }
 
-        string playerNameUI = otherPlayer.NickName  + otherPlayer.ActorNumber;
+        string playerNameUI = otherPlayer.NickName + otherPlayer.ActorNumber;
 
         Destroy(GameObject.Find(playerNameUI));
     }

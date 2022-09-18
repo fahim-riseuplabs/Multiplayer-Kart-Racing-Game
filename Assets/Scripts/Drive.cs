@@ -168,7 +168,7 @@ public class Drive : MonoBehaviour
             WheelHit wheelHit;
             wheelColliders[i].GetGroundHit(out wheelHit);
 
-            if (Mathf.Abs(wheelHit.forwardSlip) >= 0.5f || Mathf.Abs(wheelHit.sidewaysSlip) >= 0.25f)
+            if (Mathf.Abs(wheelHit.forwardSlip) >= 0.6f || Mathf.Abs(wheelHit.sidewaysSlip) >= 0.30f)
             {
                 skidNumber++;
                 if (!skidAudioSource.isPlaying)
