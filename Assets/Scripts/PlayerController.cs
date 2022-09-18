@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (drive.rb.velocity.magnitude > 1 || !RaceMonitor.isStartedRacing)
+        if (drive.rb.velocity.magnitude > 1 || accelInput == 0 || !RaceMonitor.isStartedRacing)
         {
             lastMovingTime = Time.time;
         }
@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Time.time > lastMovingTime + 4)
+        if (Time.time > lastMovingTime + 5)
         {
             drive.rb.transform.position = checkPointManager.lastCheckPoint.transform.position + Vector3.up * 2;
             drive.rb.transform.rotation = checkPointManager.lastCheckPoint.transform.rotation;

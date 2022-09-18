@@ -178,12 +178,12 @@ public class Drive : MonoBehaviour
 
                 if (PhotonNetwork.IsConnected)
                 {
-                    Vector3 position = new Vector3(0, 0.5f, 0) + (wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius);
+                    Vector3 position = new Vector3(0, 0.6f, 0) + (wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius);
                     photonView.RPC("EmitSmoke", RpcTarget.All, position, i);
                 }
                 else
                 {
-                    skidSmokes[i].transform.position = new Vector3(0, 0.5f, 0) + (wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius);
+                    skidSmokes[i].transform.position = new Vector3(0, 0.6f, 0) + (wheelColliders[i].transform.position - Vector3.up * wheelColliders[i].radius);
                     skidSmokes[i].Emit(1);
                 }
 

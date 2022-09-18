@@ -24924,8 +24924,8 @@ MonoBehaviour:
   distance: 4
   height: 2.75
   heightOffset: 0
-  heightDamping: 4
-  rotationDamping: 2
+  heightDamping: 1
+  rotationDamping: 0.5
   rotationOffset: 0
   playerCar: {fileID: 0}
   rearCamerView: {fileID: 748330445}

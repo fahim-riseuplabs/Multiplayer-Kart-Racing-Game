@@ -65,8 +65,8 @@ public class SmoothFollow : MonoBehaviour
             currentRotationAngle = transform.eulerAngles.y;
             currentHeight = transform.position.y;
 
-            currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, wantedRotationAngle, rotationDamping * Time.deltaTime);
-            currentHeight = Mathf.Lerp(currentHeight, wantedHeight, heightDamping * Time.deltaTime);
+            currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, wantedRotationAngle, rotationDamping * Time.fixedTime);
+            currentHeight = Mathf.Lerp(currentHeight, wantedHeight, heightDamping * Time.fixedTime);
 
             currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);
 
@@ -103,6 +103,11 @@ public class SmoothFollow : MonoBehaviour
     }
     private void CamAngleChange()
     {
+        if (target == null)
+        {
+            return;
+        }
+
         FP = FP * -1;
 
         PlayerPrefs.SetInt("FP", FP);
@@ -110,6 +115,11 @@ public class SmoothFollow : MonoBehaviour
 
     private void CamChange()
     {
+        if (target == null)
+        {
+            return;
+        }
+
         target[index].Find("RearCamera").gameObject.GetComponent<Camera>().targetTexture = null;
 
         index++;

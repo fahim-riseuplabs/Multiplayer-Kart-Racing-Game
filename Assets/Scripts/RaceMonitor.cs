@@ -11,7 +11,7 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     public static bool isStartedRacing = false;
     public static bool isCountDownStarter = false;
 
-    public static int totalLaps = 1;
+    public static int totalLaps = 2;
 
     public int playerSelectedCarIndex;
     public int spwanIndex;
@@ -34,12 +34,10 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
     private GameObject[] spawnPoints;
     private GameObject playerCar = null;
 
-
     private Vector3 startPos;
     private Quaternion startRot;
 
     private SmoothFollow smoothFollow;
-
 
     // Start is called before the first frame update
     void Start()
@@ -276,6 +274,8 @@ public class RaceMonitor : MonoBehaviourPunCallbacks
         string playerNameUI = otherPlayer.NickName + otherPlayer.ActorNumber;
 
         Destroy(GameObject.Find(playerNameUI));
+
+        GetCheckPointManagers();
     }
 
     public override void OnMasterClientSwitched(Player newMasterClient)
