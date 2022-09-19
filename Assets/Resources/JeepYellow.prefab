@@ -3112,7 +3112,7 @@ MonoBehaviour:
   skidAudioSource: {fileID: 8967554032076178010}
   highAccelAudio: {fileID: 8967554032076178011}
   skidTrailPrefab: {fileID: 7420289114381548495, guid: 3a7635c522b77e242bb20f96fb827201, type: 3}
-  smokePrefab: {fileID: 5215795183345285649, guid: 5553455b99ff2fe458d9a2cf72f83f65, type: 3}
+  smokePrefab: {fileID: 5215795183345285649, guid: 0cd689381d508ea4aa16e659cb43f50d, type: 3}
   brakeLight: {fileID: 8967554032625710378}
   rb: {fileID: 8967554032076178082}
   gearLenght: 3
