@@ -53,7 +53,7 @@ public class SmoothFollow : MonoBehaviour
 
         if (FP == 1)
         {
-            transform.position = target[index].transform.position + target[index].forward * 0.0125f + target[index].up * 1.15f;
+            transform.position = target[index].transform.position + target[index].forward * 0.0185f + target[index].up * 1.15f;
             transform.LookAt(target[index].transform.position + target[index].forward * 7.5f);
         }
         else
